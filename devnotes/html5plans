@@ -1,0 +1,104 @@
+
+
+HTML smup game idea  <-- game's name will be a stone name most likely 
+
+<!-- Note to self:
+The details mentioned below are vast, implementation of them would take years. Try to build up the game step by step. -->
+
+Everwing styled game with repetative gameplay, all about increasing numbers and collecting things.
+Huge point will be the gameplay, and not to include any content which cannot be earned with dedication towards the game. (max collector's skins)
+//probably there should be a premium currency, but it should be obtainable with playing
+
+
+Description:
+Style of the game is crawling through craves (flying upwards) and destroying rocks and enemies which might appear.
+Rocks shall drop rock-dust (or rock pieces or smth) which the player can sell at the vendor -> way of earning coins/currency. This option shall appear right at the end of run screen as well. Different type of rocks drop different dust.
+Player has sidekicks as well. The basic form of them are "Solrocks", eggs and rocks combined. They consist of two parts, the empty shell - which defines the element of the monster, and the "soul essence" which defines the race of it. Both shells and souls drop during the runs.
+Monsters (name not decided yet) should have individual values, genders also. Shells should drop more frequently through runs, but souls can be earned through mating the monsters as well. Shells can be built from rock dust too (but cannot be purchased from coins) from the same type of dust.
+The player character should be customizable, and it has two attack types - 1 ranged which is casted automatically and 1 melee, which should be activated on-tap. These might change based on weapon equipped and each weapon should be upgradable. Also customizable through skins (basically everything should be)
+So the player character is not only a MINER but a WARRIOR as well.
+Monsters have an on-tap ability as well, which can be activated on the two sides of the screen - a circle for each.
+A codex of all customizable things might be needed. 
+As processing thorugh the run and beating a boss there should be two options for the player to choose from, by that he/she can decide what the next cave-part is going to be like and what items can he/se be grind for. 
+Souls of monsters could look like an orb, which has the color of the adult monster and its eye in the middle.
+The player character should fly using its belt, which functionates basically as a cooler jetpack B). Also customizable.
+
+
+
+Elements shall have rarities as well.  --> besides using natural elements like most rpgs, this could also use 
+1. rock / ground / fire / plant / water / [clay] / [soil] / [sandstone] / [coal] / [ice] / [Limestone] / [Volcano soil]
+2. bronze / silver / gold
+3. emerald / crystal / ruby / saphire
+Rare gem ideas:
+https://www.gemrockauctions.com/learn/additional-gemstone-information/a-list-of-precious-and-semi-precious-gemstones-and-their-treatments
+.
+.
+.
+
+
+Implementational steps:
+1. With random spawned rocks (one kind is enough) and player going upwards shooting the game should be playable. 
+
+
+- ranked system (?!)
+- player-driven economy (?!)
+
+
+Main concerns:
+- How to get visuals and audio for the game
+
+
+Object forms:
+
+Player:
+- id
+- name
+- speed (horizontal)
+- body{ gender, head, body, arms, legs} -> generated img (?)
+- statistics {gold, experience, lvl}
+- inventory{dust{ key-value pairs} }, shells{}, souls{}, skins{}, weapons{} ... - every obtainable thing in the game}
+- equipment{ranged weapon{}, melee weapon{}, belt{}}
+- sidekicks{sideckick1{}, sidecick2{}}
+? not sure if armor shall be included, also whether player should have health or 1 shoted by any touch
+
+Projectile:
+- speed
+- damage
+- type
+- effect (?)
+- img
+
+Dust:
+- element type
+- exchange price
+- img
+
+Shell:
+- element type
+- selling price (for coins)
+- purchase price (from same type dust)
+
+Monster:
+- race name
+- evolution
+- statistics{expereince, lvl}
+- gender - male/female
+- skills{shooting type, special ability}
+
+
+Rock(obsticle):
+- hp
+- type
+- lvl
+
+Enemy:
+- hp
+- type
+- lvl
+- movement
+- projectile
+.
+.
+.
+
+
