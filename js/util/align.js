@@ -1,8 +1,18 @@
 
 class Align {
-    static scaleToGameW(obj, per){
-        obj.displayWidth=game.config.width*per;
-        obj.scaleY=obj.scaleX;
+    static scaleToGameWidth(object, ratio){
+        object.displayWidth = game.config.width*ratio;
+        object.scaleY=object.scaleX;
+    }
+
+    static scaleToGameHeight(object, ratio){
+        object.displayHeight = game.config.height*ratio;
+        object.scaleX=object.scaleY;
+    }
+
+    static scaleToGameSize(object){
+        object.displayWidth = game.config.width;
+        object.displayHeight = game.config.height;
     }
 
     static center(obj){

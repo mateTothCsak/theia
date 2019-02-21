@@ -8,7 +8,7 @@ class SceneMain extends Phaser.Scene {
 
     }
     create() {
-
+        this.scene.start("SceneArcade");
     }
 
     update() {

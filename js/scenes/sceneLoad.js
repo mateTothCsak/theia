@@ -11,6 +11,8 @@ class SceneLoad extends Phaser.Scene {
         this.progText.setOrigin(0.5, 0.5);
         this.load.on('progress', this.onProgress, this);
 
+        this.load.image("background1", "images/backgrounds/bg1.jpg");
+
   }
 
     onProgress(value){

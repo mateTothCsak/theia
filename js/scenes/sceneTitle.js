@@ -7,6 +7,7 @@ class SceneTitle extends Phaser.Scene {
 
     }
     create(){
+        this.scene.start("SceneMain");
 
     }
 
