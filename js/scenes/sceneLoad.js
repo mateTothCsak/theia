@@ -11,9 +11,15 @@ class SceneLoad extends Phaser.Scene {
         this.progText.setOrigin(0.5, 0.5);
         this.load.on('progress', this.onProgress, this);
 
-        this.load.image("background1", "images/backgrounds/bg1.jpg");
 
-  }
+
+        //Arcade
+        this.load.image("background1", "images/backgrounds/bg1.jpg");
+        this.load.spritesheet('mainCharacter', 'images/characters/main.png', { frameWidth: 25, frameHeight: 30 });
+        this.load.spritesheet('mainProjectile', 'images/projectiles/charprojectiles.png', {frameWidth: 14, frameHeight: 12});
+
+
+    }
 
     onProgress(value){
         console.log(value);
