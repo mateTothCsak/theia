@@ -21,3 +21,13 @@ You can contribute to this project with:
 * _Images / Sprites / Art_
 * _Music and Sound effects_
 * _Game design ideas_
+
+
+---
+
+Update log:
+* V. 0.0.0.1
+    * Rolling background + character running animation
+    * Horizontally dragable character
+    * Character shoots bullets upwards
+    * Bullets on level up change colors
