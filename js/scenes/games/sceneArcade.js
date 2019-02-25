@@ -5,6 +5,8 @@ class SceneArcade extends Phaser.Scene {
 
     create() {
 
+        this.game.forceSingleUpdate = true;
+
         //generates rolling background. should be organized into a function
         this.tempBackground = this.add.image(0, 0, "background1");
         let bgBaseWidth = this.tempBackground.width;
@@ -14,7 +16,7 @@ class SceneArcade extends Phaser.Scene {
         this.rollingBackground.tileScaleX = (game.config.width/bgBaseWidth);
         this.rollingBackground.tileScaleY = (game.config.height/bgBaseHeight);
 
-        this.grid = new AlignGrid({scene: this, rows: 13, cols: 13});
+        this.grid = new AlignGrid({scene: this, rows: 15, cols: 15});
         //this.grid.showNumbers();
 
 
@@ -26,15 +28,17 @@ class SceneArcade extends Phaser.Scene {
         this.character = new Player({scene: this,
                                             pictureKey: "mainCharacter",
                                             projectilePictureKey: 'mainProjectile',
-                                            projectileSpeed: -300,
-                                            attackSpeed: 27});
+                                            projectileSpeed: -800,
+                                            attackSpeed: 30});
 
+        this.obstacleLine = new ObstacleLine({scene: this});
 
     }
 
     update() {
         this.rollingBackground.tilePositionY -= this.gameSpeed;
         this.character.shootProjectiles();
+        this.obstacleLine.makeObstacles();
     }
 
 

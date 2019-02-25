@@ -30,7 +30,7 @@ class Player{
     addToGame(){
         this.playerSprite = this.scene.physics.add.sprite(0, 0, this.pictureKey).setInteractive();
         Align.scaleToGameWidth(this.playerSprite, 0.125);
-        this.scene.grid.placeAtIndex(149, this.playerSprite);
+        this.scene.grid.placeAtIndex(202, this.playerSprite);
         let characterFrames = this.scene.anims.generateFrameNumbers(this.pictureKey);
         this.scene.anims.create({key: 'run', frames: characterFrames, frameRate: this.animationPace, repeat: -1});
         this.playerSprite.play('run');
