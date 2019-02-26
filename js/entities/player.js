@@ -12,18 +12,14 @@ class Player{
 
         this.previousShotTime = new Date().getTime();
 
-        this.addToGame();
-        this.projectile = new Projectile({
-                                            scene: this.scene,
-                                            shooter: this.playerSprite,
-                                            projectileSpeed: config.projectileSpeed,
-                                            level: 1,
-                                            damage: 1,
-                                            pictureKey: config.projectilePictureKey});
+        this.projectileSpeed = config.projectileSpeed;
+        this.projectilePictureKey = config.projectilePictureKey;
+        this.projectileLevel = config.projectileLevel;
+        this.projectileDamage = config.projectileDamage;
 
+        this.addToGame();
 
         this.setDraggable();
-
 
     }
 
@@ -40,7 +36,13 @@ class Player{
         this.d = new Date();
         this.currentTime = this.d.getTime();
         if (this.previousShotTime + 1000-(this.attackSpeed*30) <= this.currentTime){
-            this.projectile.blastOff();
+            new Projectile({
+                scene: this.scene,
+                shooter: this.playerSprite,
+                projectileSpeed: this.projectileSpeed,
+                level: this.projectileLevel,
+                damage: this.projectileDamage,
+                pictureKey: this.projectilePictureKey});
             this.previousShotTime = this.currentTime;
         }
     }

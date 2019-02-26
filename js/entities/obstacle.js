@@ -10,6 +10,8 @@ class Obstacle{
 
 
         this.addToGame();
+        this.scene.obstacleGroup.add(this.obstacleSprite);
+        this.obstacleSprite.body.setImmovable();
 
     }
 

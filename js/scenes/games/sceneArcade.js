@@ -16,6 +16,7 @@ class SceneArcade extends Phaser.Scene {
         this.rollingBackground.tileScaleX = (game.config.width/bgBaseWidth);
         this.rollingBackground.tileScaleY = (game.config.height/bgBaseHeight);
 
+
         this.grid = new AlignGrid({scene: this, rows: 15, cols: 15});
         //this.grid.showNumbers();
 
@@ -24,15 +25,31 @@ class SceneArcade extends Phaser.Scene {
         this.gameSpeed = 1;
 
 
+        this.projectileSpriteGroup = this.physics.add.group();
+        this.obstacleGroup = this.physics.add.group();
+
         //add character
         this.character = new Player({scene: this,
                                             pictureKey: "mainCharacter",
+                                            attackSpeed: 30,
                                             projectilePictureKey: 'mainProjectile',
                                             projectileSpeed: -800,
-                                            attackSpeed: 30});
+                                            projectileLevel: 1,
+                                            projectileDamage: 3});
+
+        this.physics.add.collider(this.projectileSpriteGroup, this.obstacleGroup, this.hitEnemy, null, this );
+
 
         this.obstacleLine = new ObstacleLine({scene: this});
+    }
 
+
+    hitEnemy(projectile, enemy){
+        enemy.health -= projectile.damage;
+        projectile.destroy();
+        if (enemy.health <= 0){
+            enemy.destroy();
+        }
     }
 
     update() {
@@ -40,6 +57,8 @@ class SceneArcade extends Phaser.Scene {
         this.character.shootProjectiles();
         this.obstacleLine.makeObstacles();
     }
+
+
 
 
 }
