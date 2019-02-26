@@ -95,6 +95,7 @@ class SceneArcade extends Phaser.Scene {
             this.rollingBackground.tilePositionY -= this.gameSpeed;
             this.character.shootProjectiles();
             this.obstacleLine.makeObstacles();
+            
         }
     }
 
