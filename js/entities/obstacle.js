@@ -15,9 +15,14 @@ class Obstacle{
         this.obstacleSprite.y -= 100;
 
         this.scene.obstacleGroup.add(this.obstacleSprite);
+
         this.obstacleSprite.body.setImmovable();
+        this.obstacleSprite.setVelocity(0, this.scene.speedDown);
 
         WorldUtil.setDeleteOnWorldOutBottom(this.scene, this.obstacleSprite);
+
     }
+
+
 
 }

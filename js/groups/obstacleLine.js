@@ -6,10 +6,10 @@ class ObstacleLine{
         this.obstacles = [];
         this.createLevel1Line();
 
-        this.speedDown = game.config.height/16*this.scene.gameSpeed; //help to kind of bing the speed of obstacles to speed of game
+
         this.previousObstacleTime = new Date().getTime();
 
-        this.startObstacles();
+        //this.startObstacles();
 
     }
 
@@ -23,18 +23,19 @@ class ObstacleLine{
         this.obstacles.push(new Rock({scene: this.scene, spriteKey: "obstacleRock", location: 13,frameNumber: Random.randomBetween(2,0)}));
     }
 
+    /*
     startObstacles(){
         for (let i = 0; i<this.obstacles.length; i++){
             this.obstacles[i].obstacleSprite.setVelocity(0, this.speedDown);
         }
 
-    }
+    }*/
 
     makeObstacles(){
         this.d = new Date();
         this.currentTime = this.d.getTime();
         if (this.previousObstacleTime + 8000/this.scene.gameSpeed <= this.currentTime){
-            new ObstacleLine({scene: this.scene});
+            this.childLine = new ObstacleLine({scene: this.scene});
             this.previousObstacleTime = this.currentTime;
         }
     }

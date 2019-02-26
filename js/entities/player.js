@@ -19,11 +19,12 @@ class Player{
         Align.scaleToGameWidth(this.playerSprite, 0.125);
         this.scene.grid.placeAtIndex(202, this.playerSprite);
         let characterFrames = this.scene.anims.generateFrameNumbers(this.pictureKey);
-        this.scene.anims.create({key: 'run', frames: characterFrames, frameRate: this.animationPace, repeat: -1});
+        this.runAnimation = this.scene.anims.create({key: 'run', frames: characterFrames, frameRate: this.animationPace, repeat: -1});
         this.playerSprite.play('run');
         this.playerSprite.body.setImmovable();
 
         //player variables
+        this.playerSprite.baseHealth = config.health;
         this.playerSprite.health = config.health;
         this.playerSprite.playerDamage = config.playerDamage;
         this.playerSprite.attackSpeed = config.attackSpeed;
@@ -49,6 +50,18 @@ class Player{
         }
     }
 
+    characterDeath(){
+        this.playerSprite.isAlive = false;
+        this.runAnimation.pause();
+        WorldUtil.unsetDraggable(this.scene, this.playerSprite);
+        for(let i = 0; i<this.scene.obstacleGroup.getChildren().length; i++) {
+            Phaser.Actions.Call(this.scene.obstacleGroup.getChildren(), function (obstacle) {
+                obstacle.alpha = 0.75;
+                obstacle.setVelocity(0,0);
+            }, this);
+        }
+
+    }
 
 
 }

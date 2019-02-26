@@ -20,14 +20,15 @@ class SceneArcade extends Phaser.Scene {
 
         //scene variables
         this.gameSpeed = 3;
+        this.speedDown = game.config.height/16*this.gameSpeed; //help to kind of bing the speed of obstacles to speed of game
 
 
-        this.projectileSpriteGroup = this.physics.add.group();
+        this.projectileGroup = this.physics.add.group();
         this.obstacleGroup = this.physics.add.group();
 
         //add character
         this.character = new Player({scene: this,
-                                            health: 100,
+                                            health: 50,
                                             pictureKey: "mainCharacter",
                                             attackSpeed: 30,
                                             projectilePictureKey: 'mainProjectile',
@@ -35,7 +36,7 @@ class SceneArcade extends Phaser.Scene {
                                             projectileLevel: 1,
                                             projectileDamage: 3});
 
-        this.physics.add.collider(this.projectileSpriteGroup, this.obstacleGroup, this.hitEnemy, null, this );
+        this.physics.add.collider(this.projectileGroup, this.obstacleGroup, this.hitEnemy, null, this );
         this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.hitPlayer, null, this );
 
         this.obstacleLine = new ObstacleLine({scene: this});
@@ -53,13 +54,18 @@ class SceneArcade extends Phaser.Scene {
     }
 
     hitPlayer(player, obstacle){
-        player.health -= obstacle.damage;
-        obstacle.destroy();
-        if (player.health <= 0){
-            player.isAlive = false;
+        if(player.isAlive) {
+            player.health -= obstacle.damage;
+            if (player.health <= 0) {
+                this.character.characterDeath();
+            } else {
+                obstacle.destroy();
+            }
+            player.alpha = player.health / player.baseHealth;
+            this.time.delayedCall(500, function () {
+                player.alpha = 1;
+            }, [], this);
         }
-        player.alpha = player.health/100;
-        this.time.delayedCall(1500, function(){player.alpha = 1;}, [], this);
 
     }
 

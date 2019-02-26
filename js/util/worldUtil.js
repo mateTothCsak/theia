@@ -17,6 +17,12 @@ class WorldUtil
         });
     }
 
+    static unsetDraggable(scene, objectSprite){
+        scene.input.setDraggable(objectSprite, false);
+        scene.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+        });
+    }
+
 
     static setDeleteOnWorldOutBottom(scene, objectSprite){
         // do not apply if starting from top
