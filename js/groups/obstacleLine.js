@@ -9,7 +9,6 @@ class ObstacleLine{
 
         this.previousObstacleTime = new Date().getTime();
 
-        //this.startObstacles();
 
     }
 
@@ -23,13 +22,6 @@ class ObstacleLine{
         this.obstacles.push(new Rock({scene: this.scene, spriteKey: "obstacleRock", location: 13,frameNumber: Random.randomBetween(2,0)}));
     }
 
-    /*
-    startObstacles(){
-        for (let i = 0; i<this.obstacles.length; i++){
-            this.obstacles[i].obstacleSprite.setVelocity(0, this.speedDown);
-        }
-
-    }*/
 
     makeObstacles(){
         this.d = new Date();

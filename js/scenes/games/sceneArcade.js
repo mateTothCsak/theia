@@ -5,26 +5,26 @@ class SceneArcade extends Phaser.Scene {
 
     create() {
 
+        //his should reduce animation lag
         this.game.forceSingleUpdate = true;
 
         //generates rolling background. should be organized into a function
         this.rollingBackground = this.generateRollingBackground("background1");
 
 
-
-
         this.grid = new AlignGrid({scene: this, rows: 15, cols: 15});
         //this.grid.showNumbers();
 
 
-
         //scene variables
-        this.gameSpeed = 3;
+        this.gameSpeed = 1;
         this.speedDown = game.config.height/16*this.gameSpeed; //help to kind of bing the speed of obstacles to speed of game
+        this.lastSpeedUpdate = new Date().getTime();
 
-
+        //groups
         this.projectileGroup = this.physics.add.group();
         this.obstacleGroup = this.physics.add.group();
+        this.obstacleLine = new ObstacleLine({scene: this});
 
         //add character
         this.character = new Player({scene: this,
@@ -36,10 +36,9 @@ class SceneArcade extends Phaser.Scene {
                                             projectileLevel: 1,
                                             projectileDamage: 3});
 
+        //colliders
         this.physics.add.collider(this.projectileGroup, this.obstacleGroup, this.hitEnemy, null, this );
         this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.hitPlayer, null, this );
-
-        this.obstacleLine = new ObstacleLine({scene: this});
 
 
     }
@@ -82,11 +81,25 @@ class SceneArcade extends Phaser.Scene {
 
     update() {
         if(this.character.playerSprite.isAlive) {
+            let currentTime = new Date().getTime();
+            if(this.lastSpeedUpdate + 10000 <= currentTime){
+                this.gameSpeed += 1;
+                this.speedDown = game.config.height/16*this.gameSpeed;
+                this.lastSpeedUpdate = currentTime;
+                for(let i = 0; i<this.obstacleGroup.getChildren().length; i++) {
+                    Phaser.Actions.Call(this.obstacleGroup.getChildren(), function (obstacle) {
+                        obstacle.setVelocity(0, this.speedDown);
+                    }, this);
+                }
+            }
             this.rollingBackground.tilePositionY -= this.gameSpeed;
             this.character.shootProjectiles();
             this.obstacleLine.makeObstacles();
         }
     }
+
+
+    //a util file for time would be nice too
 
 
 
