@@ -8,21 +8,18 @@ class SceneArcade extends Phaser.Scene {
         this.game.forceSingleUpdate = true;
 
         //generates rolling background. should be organized into a function
-        this.tempBackground = this.add.image(0, 0, "background1");
-        let bgBaseWidth = this.tempBackground.width;
-        let bgBaseHeight = this.tempBackground.height;
-        this.tempBackground.destroy();
-        this.rollingBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, "background1").setOrigin(0, 0);
-        this.rollingBackground.tileScaleX = (game.config.width/bgBaseWidth);
-        this.rollingBackground.tileScaleY = (game.config.height/bgBaseHeight);
+        this.rollingBackground = this.generateRollingBackground("background1");
+
+
 
 
         this.grid = new AlignGrid({scene: this, rows: 15, cols: 15});
         //this.grid.showNumbers();
 
 
+
         //scene variables
-        this.gameSpeed = 1;
+        this.gameSpeed = 3;
 
 
         this.projectileSpriteGroup = this.physics.add.group();
@@ -30,6 +27,7 @@ class SceneArcade extends Phaser.Scene {
 
         //add character
         this.character = new Player({scene: this,
+                                            health: 100,
                                             pictureKey: "mainCharacter",
                                             attackSpeed: 30,
                                             projectilePictureKey: 'mainProjectile',
@@ -38,9 +36,11 @@ class SceneArcade extends Phaser.Scene {
                                             projectileDamage: 3});
 
         this.physics.add.collider(this.projectileSpriteGroup, this.obstacleGroup, this.hitEnemy, null, this );
-
+        this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.hitPlayer, null, this );
 
         this.obstacleLine = new ObstacleLine({scene: this});
+
+
     }
 
 
@@ -52,10 +52,34 @@ class SceneArcade extends Phaser.Scene {
         }
     }
 
+    hitPlayer(player, obstacle){
+        player.health -= obstacle.damage;
+        obstacle.destroy();
+        if (player.health <= 0){
+            player.isAlive = false;
+        }
+        player.alpha = player.health/100;
+        this.time.delayedCall(1500, function(){player.alpha = 1;}, [], this);
+
+    }
+
+    generateRollingBackground(key){
+        let tempBackground = this.add.image(0, 0, key);
+        let bgBaseWidth = tempBackground.width;
+        let bgBaseHeight = tempBackground.height;
+        tempBackground.destroy();
+        let rollingBackground = this.add.tileSprite(0, 0, game.config.width, game.config.height, key).setOrigin(0, 0);
+        rollingBackground.tileScaleX = (game.config.width/bgBaseWidth);
+        rollingBackground.tileScaleY = (game.config.height/bgBaseHeight);
+        return rollingBackground;
+    }
+
     update() {
-        this.rollingBackground.tilePositionY -= this.gameSpeed;
-        this.character.shootProjectiles();
-        this.obstacleLine.makeObstacles();
+        if(this.character.playerSprite.isAlive) {
+            this.rollingBackground.tilePositionY -= this.gameSpeed;
+            this.character.shootProjectiles();
+            this.obstacleLine.makeObstacles();
+        }
     }
 
 

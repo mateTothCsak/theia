@@ -9,10 +9,7 @@ class ObstacleLine{
         this.speedDown = game.config.height/16*this.scene.gameSpeed; //help to kind of bing the speed of obstacles to speed of game
         this.previousObstacleTime = new Date().getTime();
 
-
         this.startObstacles();
-
-
 
     }
 

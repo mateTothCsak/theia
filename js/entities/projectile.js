@@ -15,20 +15,11 @@ class Projectile {
         this.projectileSprite.setVelocity(0, this.projectileSpeed);
 
 
-        //make it to util!!
-        this.projectileSprite.setCollideWorldBounds(true);
-        this.projectileSprite.body.onWorldBounds = true;
-        this.projectileSprite.body.world.on('worldbounds', function(body) {
-            if (body.gameObject === this) {
-                this.destroy();
-            }
-        }, this.projectileSprite);
-
         this.projectileSprite.level = config.level;
         this.projectileSprite.damage = config.damage;
         this.projectileSprite.type = config.type;
 
-
+        WorldUtil.setDeleteOnWorldOut(this.projectileSprite);
     }
 
 }
