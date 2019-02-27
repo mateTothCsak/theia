@@ -18,6 +18,7 @@ class SceneLoad extends Phaser.Scene {
         this.load.spritesheet('mainCharacter', 'images/characters/main.png', { frameWidth: 25, frameHeight: 30 });
         this.load.spritesheet('mainProjectile', 'images/projectiles/charprojectiles.png', {frameWidth: 14, frameHeight: 12});
         this.load.spritesheet('obstacleRock', 'images/obstacles/rocks.png', {frameWidth: 180, frameHeight: 100});
+        this.load.image('scoreContainer', 'images/ui/scoreContainerLight.png');
 
 
     }
