@@ -12,7 +12,7 @@ class Player{
         this.projectileSpeed = config.projectileSpeed;
         this.projectilePictureKey = config.projectilePictureKey;
         this.projectileLevel = config.projectileLevel;
-        this.projectileDamage = config.projectileDamage;
+        //this.projectileDamage = config.projectileDamage;
 
         //add to game
         this.playerSprite = this.scene.physics.add.sprite(0, 0, this.pictureKey).setInteractive();
@@ -38,13 +38,13 @@ class Player{
     shootProjectiles(){
         this.d = new Date();
         this.currentTime = this.d.getTime();
-        if (this.previousShotTime + 1000-(this.playerSprite.attackSpeed*30) <= this.currentTime){
+        if (this.previousShotTime + 1000-(this.playerSprite.attackSpeed*10) <= this.currentTime){
             new Projectile({
                 scene: this.scene,
                 shooter: this.playerSprite,
                 projectileSpeed: this.projectileSpeed,
                 level: this.projectileLevel,
-                damage: this.projectileDamage,
+                damage: this.playerSprite.playerDamage,
                 pictureKey: this.projectilePictureKey});
             this.previousShotTime = this.currentTime;
         }
@@ -60,6 +60,9 @@ class Player{
                 obstacle.setVelocity(0,0);
             }, this);
         }
+        this.playerSprite.once('pointerup', function () {
+            this.scene.scene.start('SceneArcade');
+        }, this);
 
     }
 

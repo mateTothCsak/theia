@@ -13,9 +13,7 @@ class Obstacle{
         Align.scaleToGameWidth(this.obstacleSprite, 0.20);
         this.scene.grid.placeAtIndex(this.location, this.obstacleSprite);
         this.obstacleSprite.y -= 100;
-
         this.scene.obstacleGroup.add(this.obstacleSprite);
-
         this.obstacleSprite.body.setImmovable();
         this.obstacleSprite.setVelocity(0, this.scene.speedDown);
 

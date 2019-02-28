@@ -18,30 +18,35 @@ class SceneArcade extends Phaser.Scene {
         this.gameSpeed = 1;
         this.speedDown = game.config.height/16*this.gameSpeed; //help to kind of bing the speed of obstacles to speed of game
         this.lastSpeedUpdate = new Date().getTime();
+        this.speedIncreaseAt = 100; //gamespeed gets increased when reached this amount of points
         this.score = 1;
+        this.pointIncerase = 1;
+
 
         //groups
         this.projectileGroup = this.physics.add.group();
         this.obstacleGroup = this.physics.add.group();
         this.obstacleLine = new ObstacleLine({scene: this});
+        this.powerUpGroup = this.physics.add.group();
 
         //add character
         this.character = new Player({scene: this,
                                             health: 50,
                                             pictureKey: "mainCharacter",
-                                            attackSpeed: 25,
+                                            attackSpeed: 70,
                                             projectilePictureKey: 'mainProjectile',
                                             projectileSpeed: -600,
                                             projectileLevel: 1,
-                                            projectileDamage: 3});
-
-        //this.scoreText = this.add.text(0, 0, "Score: ", {fontSize: game.config.width/30, align: "center", backgroundColor: '#000000'});
+                                            playerDamage: 3});
 
 
         //colliders
         this.physics.add.collider(this.projectileGroup, this.obstacleGroup, this.hitEnemy, null, this );
         this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.hitPlayer, null, this );
 
+        this.physics.add.collider(this.character.playerSprite, this.powerUpGroup,  this.pickUp, null, this );
+
+        this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
         this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
         this.scoreBox.setDepth(1);
 
@@ -50,9 +55,9 @@ class SceneArcade extends Phaser.Scene {
 
     update() {
         if(this.character.playerSprite.isAlive) {
-            this.checkForSpeedUp(10000);
+            this.checkForSpeedUp();
             this.rollingBackground.tilePositionY -= this.gameSpeed;
-            this.score += this.gameSpeed/10;
+            this.score += this.pointIncerase/10;
             this.scoreBox.scoreText.setText(Math.floor(this.score));
             this.character.shootProjectiles();
             this.obstacleLine.makeObstacles();
@@ -74,11 +79,13 @@ class SceneArcade extends Phaser.Scene {
         return rollingBackground;
     }
 
-    checkForSpeedUp(millisecs){
+    checkForSpeedUp(){
         let currentTime = new Date().getTime();
-        if(this.lastSpeedUpdate + millisecs <= currentTime){
+        if(Math.floor(this.score)%this.speedIncreaseAt == 0){
+            this.score += 1;
             this.gameSpeed += 1;
             this.speedDown = game.config.height/16*this.gameSpeed;
+            this.speedIncreaseAt = this.speedIncreaseAt*2;
             this.lastSpeedUpdate = currentTime;
             for(let i = 0; i<this.obstacleGroup.getChildren().length; i++) {
                 Phaser.Actions.Call(this.obstacleGroup.getChildren(), function (obstacle) {
@@ -96,6 +103,7 @@ class SceneArcade extends Phaser.Scene {
         enemy.health -= projectile.damage;
         projectile.destroy();
         if (enemy.health <= 0){
+            new PowerUp({scene: this, startingX: enemy.x,startingY: enemy.y, spriteKey: "damageUp"});
             enemy.destroy();
         }
     }
@@ -113,7 +121,11 @@ class SceneArcade extends Phaser.Scene {
                 player.alpha = 1;
             }, [], this);
         }
+    }
 
+    pickUp(player, powerUp){
+        powerUp.onPickUp();
+        console.log(this.character.playerSprite.playerDamage);
     }
 
     //Note: an util file for time would be nice too
