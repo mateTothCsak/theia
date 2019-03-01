@@ -26,8 +26,25 @@ You can contribute to this project with:
 ---
 
 Update log:
+
+* V. 0.0.0.2
+    * Obstacles (Rock)
+        * they collide with projectiles and player character
+        * their sprites are randomly generated
+        * they come in lines of 5, fill out the whole screen-width
+        * on being destroyed they disappear
+    * ScoreBox
+        * Counts player score based on survived run-time
+        * Game gets faster after reaching milestones
+    * PowerUps
+        * They affect Damage, Health, Attack Speed or Projectile Speed on pick-up
+    * WorldUtil class created, with functions that help to delete out of world objects
+    * Random class with helper functions
+    * Game application is fully responsive
+
+
 * V. 0.0.0.1
     * Rolling background + character running animation
-    * Horizontally dragable character
+    * Horizontally draggable character
     * Character shoots bullets upwards
     * Bullets on level up change colors

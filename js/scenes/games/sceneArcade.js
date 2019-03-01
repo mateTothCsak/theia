@@ -49,18 +49,19 @@ class SceneArcade extends Phaser.Scene {
         this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
         this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
         this.scoreBox.setDepth(1);
-
     }
 
 
     update() {
         if(this.character.playerSprite.isAlive) {
             this.checkForSpeedUp();
-            this.rollingBackground.tilePositionY -= this.gameSpeed;
+            this.rollingBackground.tilePositionY -= this.gameSpeed/this.rollingBackground.tileScaleX;
             this.score += this.pointIncerase/10;
             this.scoreBox.scoreText.setText(Math.floor(this.score));
             this.character.shootProjectiles();
             this.obstacleLine.makeObstacles();
+            this.obstacleLine.moveObstacles();
+            console.log(this.rollingBackground.tilePositionY);
         }
     }
 
@@ -87,11 +88,6 @@ class SceneArcade extends Phaser.Scene {
             this.speedDown = game.config.height/16*this.gameSpeed;
             this.speedIncreaseAt = this.speedIncreaseAt*2;
             this.lastSpeedUpdate = currentTime;
-            for(let i = 0; i<this.obstacleGroup.getChildren().length; i++) {
-                Phaser.Actions.Call(this.obstacleGroup.getChildren(), function (obstacle) {
-                    obstacle.setVelocity(0, this.speedDown);
-                }, this);
-            }
         }
     }
 
@@ -103,7 +99,7 @@ class SceneArcade extends Phaser.Scene {
         enemy.health -= projectile.damage;
         projectile.destroy();
         if (enemy.health <= 0){
-            new PowerUp({scene: this, startingX: enemy.x,startingY: enemy.y, spriteKey: "damageUp"});
+            this.generateRandomPowerUp(enemy);
             enemy.destroy();
         }
     }
@@ -128,14 +124,19 @@ class SceneArcade extends Phaser.Scene {
         console.log(this.character.playerSprite.playerDamage);
     }
 
-    //Note: an util file for time would be nice too
-    /* Next step: create a seperate power-up for these events:
-    1. damage boost
-        this.character.projectileLevel += 1;
-        this.character.projectileDamage += this.character.projectileDamage;
-    2. attack frequency boost
-        this.character.attackSpeed += 1;
-    3. attack projectile speed boost
-        this.character.projectileSpeed -= 25;
-     */
+
+    generateRandomPowerUp(enemy){
+        let decider = Random.randomBetween(4,1);
+        if (decider == 1){
+            new ProjectileSpeedUp({scene: this, startingX: enemy.x,startingY: enemy.y});
+        }  else if (decider == 2){
+            new AttackSpeedUp({scene: this, startingX: enemy.x,startingY: enemy.y});
+        } else if (decider == 3){
+            new DamageUp({scene: this, startingX: enemy.x,startingY: enemy.y});
+        } else if (decider == 4){
+            new HealthUp({scene: this, startingX: enemy.x,startingY: enemy.y});
+        }
+    }
+
+
 }
