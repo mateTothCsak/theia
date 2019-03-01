@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="user-scalable=0, initial-scale=1,minimum-scale=1, maximum-scale=1, width=device-width, minimal-ui=1">
     <title>Theia Online</title>
+    <link rel="icon" href="https://openclipart.org/image/2400px/svg_to_png/309105/1540673768.png">
     <!-- phaser -->
     <script src="js/phaser.min.js"></script>
     <!-- main files -->
@@ -16,13 +17,26 @@
     <script src="js/scenes/games/sceneArcade.js"></script>
     <!-- ui -->
     <script src="js/ui/bar.js"></script>
+    <script src="js/ui/scoreBox.js"></script>
     <!-- util -->
     <script src="js/util/align.js"></script>
     <script src="js/util/alignGrid.js"></script>
-    <script src="js/util/collision.js"></script>
+    <script src="js/util/worldUtil.js"></script>
+    <script src="js/util/random.js"></script>
     <!-- entities -->
     <script src="js/entities/projectile.js"></script>
     <script src="js/entities/player.js"></script>
+    <script src="js/entities/obstacle.js"></script>
+    <script src="js/entities/powerUp.js"></script>
+    <!-- obstacles -->
+    <script src="js/entities/obstacles/rock.js"></script>
+    <!-- powerups -->
+    <script src="js/entities/powerups/damageUp.js"></script>
+    <script src="js/entities/powerups/attackSpeedUp.js"></script>
+    <script src="js/entities/powerups/projectileSpeedUp.js"></script>
+    <script src="js/entities/powerups/healthUp.js"></script>
+    <!-- groups-->
+    <script src="js/groups/obstacleLine.js"></script>
 
     <style>
         * {
