@@ -14,13 +14,6 @@ class ScoreBox extends Phaser.GameObjects.Container {
         this.scoreText.y = this.scoreContainer.y + this.scoreContainer.displayHeight/4;
         this.scoreText.x = this.scoreContainer.x + this.scoreContainer.displayWidth/4;
 
-        console.log(this.scoreContainer.y)
-        console.log(this.scoreContainer.x)
-
-        console.log(this.scoreText.y)
-        console.log(this.scoreText.x)
-
-
         this.add(this.scoreContainer);
         this.add(this.scoreText);
 

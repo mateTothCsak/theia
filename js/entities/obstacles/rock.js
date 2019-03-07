@@ -8,6 +8,5 @@ class Rock extends Obstacle{
         this.obstacleSprite.health = 30;
         this.obstacleSprite.damage = 10;
         this.initialize(this.obstacleSprite);
-
     }
 }

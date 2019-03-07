@@ -38,7 +38,7 @@ class Player{
     shootProjectiles(){
         this.d = new Date();
         this.currentTime = this.d.getTime();
-        if (this.previousShotTime + 1000-(this.playerSprite.attackSpeed*10) <= this.currentTime){
+        if (this.previousShotTime + 250 -this.playerSprite.attackSpeed <= this.currentTime){ //1000*10)
             new Projectile({
                 scene: this.scene,
                 shooter: this.playerSprite,

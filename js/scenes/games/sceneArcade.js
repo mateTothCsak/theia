@@ -37,7 +37,7 @@ class SceneArcade extends Phaser.Scene {
                                             projectilePictureKey: 'mainProjectile',
                                             projectileSpeed: -600,
                                             projectileLevel: 1,
-                                            playerDamage: 3});
+                                            playerDamage: 2});
 
 
         //colliders
@@ -55,13 +55,12 @@ class SceneArcade extends Phaser.Scene {
     update() {
         if(this.character.playerSprite.isAlive) {
             this.checkForSpeedUp();
-            this.rollingBackground.tilePositionY -= this.gameSpeed/this.rollingBackground.tileScaleX;
+            this.rollingBackground.tilePositionY -= this.gameSpeed/this.rollingBackground.tileScaleY;
             this.score += this.pointIncerase/10;
             this.scoreBox.scoreText.setText(Math.floor(this.score));
             this.character.shootProjectiles();
             this.obstacleLine.makeObstacles();
             this.obstacleLine.moveObstacles();
-            console.log(this.rollingBackground.tilePositionY);
         }
     }
 
@@ -126,15 +125,19 @@ class SceneArcade extends Phaser.Scene {
 
 
     generateRandomPowerUp(enemy){
-        let decider = Random.randomBetween(4,1);
-        if (decider == 1){
-            new ProjectileSpeedUp({scene: this, startingX: enemy.x,startingY: enemy.y});
-        }  else if (decider == 2){
-            new AttackSpeedUp({scene: this, startingX: enemy.x,startingY: enemy.y});
-        } else if (decider == 3){
-            new DamageUp({scene: this, startingX: enemy.x,startingY: enemy.y});
-        } else if (decider == 4){
-            new HealthUp({scene: this, startingX: enemy.x,startingY: enemy.y});
+        //50-20-15-15
+        let willDrop = (Random.randomBetween(100, 1) < 5) ? true : false;
+        if(willDrop) {
+            let decider = Random.randomBetween(100, 1);
+            if(decider <= 50){
+                new DamageUp({scene: this, startingX: enemy.x, startingY: enemy.y});
+            } else if (decider > 50 && decider <= 70){
+                new HealthUp({scene: this, startingX: enemy.x, startingY: enemy.y});
+            }else if (decider > 70 && decider <= 85){
+                new ProjectileSpeedUp({scene: this, startingX: enemy.x, startingY: enemy.y});
+            } else if (decider > 85 ){
+                new AttackSpeedUp({scene: this, startingX: enemy.x, startingY: enemy.y});
+            }
         }
     }
 
