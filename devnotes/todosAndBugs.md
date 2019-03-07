@@ -6,7 +6,7 @@
         TODO-s 0.0.0.3
         1. Powerups should be random and rare //DONE
         2. Atk speed based on distance, not on time //REJECTED
-        3. Different level rocks randomly
+        3. Different level rocks randomly // DONE
         4. Rock drops
         5. companions
         6. Game balance
@@ -16,6 +16,7 @@
         1. upon picking up health, getting damaged a floating indicator should show the hp change with red or green text, and then fade (like apex)
         2. powerups rotating around
         3. player shot animation change
+        4. rock 
       
         
         

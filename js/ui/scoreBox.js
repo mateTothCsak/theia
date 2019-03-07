@@ -9,7 +9,7 @@ class ScoreBox extends Phaser.GameObjects.Container {
         Align.scaleToGameWidth(this.scoreContainer, .33)
         this.scene.grid.placeAtIndex(this.locationIndex, this.scoreContainer);
 
-        this.scoreText = this.scene.add.text(0, 0, "woooo", {fontSize: game.config.width/20, color: "#ccc09b", fontFamily: '"Times New Roman"'}).setOrigin(0, 0);
+        this.scoreText = this.scene.add.text(0, 0, "", {fontSize: game.config.width/20, color: "#ccc09b", fontFamily: '"Times New Roman"'}).setOrigin(0, 0);
         this.scoreText.setFontStyle("bold");
         this.scoreText.y = this.scoreContainer.y + this.scoreContainer.displayHeight/4;
         this.scoreText.x = this.scoreContainer.x + this.scoreContainer.displayWidth/4;

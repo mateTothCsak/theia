@@ -22,6 +22,7 @@ window.onload = function(){
                     debug: false
                 }
             },
+            isMobile: isMobile,
             scene: [SceneLoad, SceneMain, SceneTitle, SceneArcade]
         };
     } else {
@@ -36,11 +37,9 @@ window.onload = function(){
                     debug: false
                 }
             },
+            isMobile: isMobile,
             scene: [SceneLoad, SceneMain, SceneTitle, SceneArcade]
         };
     }
-
-    globals = new Globals();
-    globals.isMobile = isMobile;
     game = new Phaser.Game(config);
 }

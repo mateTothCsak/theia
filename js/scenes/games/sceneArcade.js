@@ -15,12 +15,16 @@ class SceneArcade extends Phaser.Scene {
         //this.grid.showNumbers();
 
         //scene variables
+        this.score = 1;
         this.gameSpeed = 1;
         this.speedDown = game.config.height/16*this.gameSpeed; //help to kind of bing the speed of obstacles to speed of game
         this.lastSpeedUpdate = new Date().getTime();
+
         this.speedIncreaseAt = 100; //gamespeed gets increased when reached this amount of points
-        this.score = 1;
         this.pointIncerase = 1;
+        this.powerUpDropChance = 10; // percent
+
+        this.gameLevel = 1;
 
 
         //groups
@@ -37,7 +41,7 @@ class SceneArcade extends Phaser.Scene {
                                             projectilePictureKey: 'mainProjectile',
                                             projectileSpeed: -600,
                                             projectileLevel: 1,
-                                            playerDamage: 2});
+                                            playerDamage: 1});
 
 
         //colliders
@@ -47,8 +51,12 @@ class SceneArcade extends Phaser.Scene {
         this.physics.add.collider(this.character.playerSprite, this.powerUpGroup,  this.pickUp, null, this );
 
         this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
-        this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
         this.scoreBox.setDepth(1);
+
+        this.materialBag = this.physics.add.sprite(0, 0, "materialBag").setOrigin(0, 0);
+        this.grid.placeAtIndex(0, this.materialBag);
+        Align.scaleToGameWidth(this.materialBag, 0.13);
+        this.materialBag.setDepth(1);
     }
 
 
@@ -87,6 +95,7 @@ class SceneArcade extends Phaser.Scene {
             this.speedDown = game.config.height/16*this.gameSpeed;
             this.speedIncreaseAt = this.speedIncreaseAt*2;
             this.lastSpeedUpdate = currentTime;
+            this.gameLevel += 1;
         }
     }
 
@@ -126,7 +135,7 @@ class SceneArcade extends Phaser.Scene {
 
     generateRandomPowerUp(enemy){
         //50-20-15-15
-        let willDrop = (Random.randomBetween(100, 1) < 5) ? true : false;
+        let willDrop = (Random.randomBetween(100, 1) < this.powerUpDropChance) ? true : false;
         if(willDrop) {
             let decider = Random.randomBetween(100, 1);
             if(decider <= 50){
