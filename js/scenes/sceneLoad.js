@@ -17,11 +17,20 @@ class SceneLoad extends Phaser.Scene {
         this.load.image("background1", "images/backgrounds/bg1.jpg");
         this.load.spritesheet('mainCharacter', 'images/characters/main.png', { frameWidth: 25, frameHeight: 30 });
         this.load.spritesheet('mainProjectile', 'images/projectiles/charprojectiles.png', {frameWidth: 14, frameHeight: 12});
-        this.load.spritesheet('obstacleRock', 'images/obstacles/rocks.png', {frameWidth: 180, frameHeight: 100});
+
+        this.load.spritesheet('obstacleRock', 'images/obstacles/rock.png', {frameWidth: 180, frameHeight: 100});
         this.load.spritesheet('obstacleClay', 'images/obstacles/clay.png', {frameWidth: 180, frameHeight: 100});
         this.load.spritesheet('obstacleCoal', 'images/obstacles/coal.png', {frameWidth: 180, frameHeight: 100});
         this.load.spritesheet('obstacleLimestone', 'images/obstacles/limestone.png', {frameWidth: 180, frameHeight: 100});
+
         this.load.spritesheet('obstacleRockExplosion', 'images/effects/explosions/rockExplosion.png', {frameWidth: 255, frameHeight: 255});
+
+        this.load.image('rockShard', 'images/obstacles/rockShard.png')
+        this.load.image('clayShard', 'images/obstacles/clayShard.png')
+        this.load.image('coalShard', 'images/obstacles/coalShard.png')
+        this.load.image('limestoneShard', 'images/obstacles/limestoneShard.png')
+
+
         this.load.image('scoreContainer', 'images/ui/scoreContainerLight.png');
         this.load.image('materialBag', 'images/ui/materialBag.png');
         this.load.image('damageUp', 'images/powerups/damageUp.png');

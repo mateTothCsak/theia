@@ -94,7 +94,7 @@ class SceneArcade extends Phaser.Scene {
         if(Math.floor(this.score)%this.speedIncreaseAt == 0){
             this.score += 1;
             this.gameSpeed += 1;
-            this.speedDown = game.config.height/16*(this.gameSpeed+1);
+            this.speedDown = game.config.height/16*(this.gameSpeed);
             this.speedIncreaseAt = this.speedIncreaseAt*2;
             this.lastSpeedUpdate = currentTime;
             this.gameLevel += 1;
@@ -111,7 +111,9 @@ class SceneArcade extends Phaser.Scene {
         if (enemy.health <= 0){
             this.generateRandomPowerUp(enemy);
             enemy.explode();
+            this.dropShards(enemy)
             enemy.destroy();
+
         }
     }
 
@@ -132,7 +134,6 @@ class SceneArcade extends Phaser.Scene {
 
     pickUp(player, powerUp){
         powerUp.onPickUp();
-        console.log(this.character.playerSprite.playerDamage);
     }
 
 
@@ -151,6 +152,28 @@ class SceneArcade extends Phaser.Scene {
                 new AttackSpeedUp({scene: this, startingX: enemy.x, startingY: enemy.y});
             }
         }
+    }
+
+
+    dropShards(parent){
+        //TODO move this to obstacles class and should be called from the obstacle explosion on complete function
+        let dropAmount = Random.randomBetween(10, 3);
+        for (let i = 0; i < dropAmount; i++) {
+            let positionX = Random.randomBetween(parent.displayWidth, 0)
+            positionX = Random.randomlyPositiveOrNegative(positionX) + parent.x;
+
+            let positionY = Random.randomBetween(parent.displayHeight, 0);
+            positionY = Random.randomlyPositiveOrNegative(positionY) + parent.y;
+
+            let shard = this.physics.add.sprite(positionX, positionY, "rockShard");
+            //TODO rotate by random angle
+            Align.scaleToGameWidth(shard, 0.03);
+            this.physics.moveTo(shard, this.materialBag.x + this.materialBag.displayWidth/2, this.materialBag.y + this.materialBag.displayHeight/2, game.config.height / 2);
+
+            WorldUtil.setDeleteOnWorldOut(shard);
+        }
+
+
     }
 
 

@@ -11,12 +11,13 @@
         5. companions
         6. Game balance
         7. end and start screen
+        8. refactor
         
         TODO-s 0.0.0.4:
         1. upon picking up health, getting damaged a floating indicator should show the hp change with red or green text, and then fade (like apex)
         2. powerups rotating around
         3. player shot animation change
-        4. rock 
+        4. special "soul stone" obstacle to drop soul shard
       
         
         
