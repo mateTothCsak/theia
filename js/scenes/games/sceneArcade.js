@@ -32,6 +32,7 @@ class SceneArcade extends Phaser.Scene {
         this.obstacleGroup = this.physics.add.group();
         this.obstacleLine = new ObstacleLine({scene: this});
         this.powerUpGroup = this.physics.add.group();
+        this.scrollingGroup = this.physics.add.group(); //all other sprites scrolling with BG
 
         //add character
         this.character = new Player({scene: this,
@@ -41,7 +42,7 @@ class SceneArcade extends Phaser.Scene {
                                             projectilePictureKey: 'mainProjectile',
                                             projectileSpeed: -600,
                                             projectileLevel: 1,
-                                            playerDamage: 1});
+                                            playerDamage: 2});
 
 
         //colliders
@@ -69,6 +70,7 @@ class SceneArcade extends Phaser.Scene {
             this.character.shootProjectiles();
             this.obstacleLine.makeObstacles();
             this.obstacleLine.moveObstacles();
+            this.obstacleLine.moveScrollingObjects();
         }
     }
 
@@ -92,7 +94,7 @@ class SceneArcade extends Phaser.Scene {
         if(Math.floor(this.score)%this.speedIncreaseAt == 0){
             this.score += 1;
             this.gameSpeed += 1;
-            this.speedDown = game.config.height/16*this.gameSpeed;
+            this.speedDown = game.config.height/16*(this.gameSpeed+1);
             this.speedIncreaseAt = this.speedIncreaseAt*2;
             this.lastSpeedUpdate = currentTime;
             this.gameLevel += 1;
@@ -108,6 +110,7 @@ class SceneArcade extends Phaser.Scene {
         projectile.destroy();
         if (enemy.health <= 0){
             this.generateRandomPowerUp(enemy);
+            enemy.explode();
             enemy.destroy();
         }
     }

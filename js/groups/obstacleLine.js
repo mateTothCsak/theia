@@ -65,6 +65,15 @@ class ObstacleLine{
         }
     }
 
+    moveScrollingObjects(){ //rolling with screen
+        if(this.scene.scrollingGroup.getChildren().length > 0) {
+            for (let i = 0; i < this.scene.scrollingGroup.getChildren().length; i++) {
+                this.scene.scrollingGroup.getChildren()[i].y += this.scene.gameSpeed;
+            }
+        }
+
+    }
+
     fillArray(gameLevel){
         let tempObstaclesArr = []
         for (let obstacle in this.obstaclesByLevel[gameLevel]){
