@@ -33,6 +33,7 @@ class SceneArcade extends Phaser.Scene {
         this.obstacleLine = new ObstacleLine({scene: this});
         this.powerUpGroup = this.physics.add.group();
         this.scrollingGroup = this.physics.add.group(); //all other sprites scrolling with BG
+        this.shardGroup = this.physics.add.group();
 
         //add character
         this.character = new Player({scene: this,
@@ -45,11 +46,6 @@ class SceneArcade extends Phaser.Scene {
                                             playerDamage: 2});
 
 
-        //colliders
-        this.physics.add.collider(this.projectileGroup, this.obstacleGroup, this.hitEnemy, null, this );
-        this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.hitPlayer, null, this );
-
-        this.physics.add.collider(this.character.playerSprite, this.powerUpGroup,  this.pickUp, null, this );
 
         this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
         this.scoreBox.setDepth(1);
@@ -57,7 +53,15 @@ class SceneArcade extends Phaser.Scene {
         this.materialBag = this.physics.add.sprite(0, 0, "materialBag").setOrigin(0, 0);
         this.grid.placeAtIndex(0, this.materialBag);
         Align.scaleToGameWidth(this.materialBag, 0.13);
+        this.materialBag.setImmovable();
         this.materialBag.setDepth(1);
+
+
+        //colliders
+        this.physics.add.collider(this.projectileGroup, this.obstacleGroup, this.hitEnemy, null, this );
+        this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.hitPlayer, null, this );
+        this.physics.add.collider(this.character.playerSprite, this.powerUpGroup,  this.pickUp, null, this );
+        this.physics.add.collider(this.materialBag, this.shardGroup,  this.shardsToBag, null, this );
     }
 
 
@@ -111,7 +115,6 @@ class SceneArcade extends Phaser.Scene {
         if (enemy.health <= 0){
             this.generateRandomPowerUp(enemy);
             enemy.explode();
-            this.dropShards(enemy)
             enemy.destroy();
 
         }
@@ -136,6 +139,12 @@ class SceneArcade extends Phaser.Scene {
         powerUp.onPickUp();
     }
 
+    shardsToBag(bag, shard){
+        shard.destroy();
+    }
+
+
+
 
     generateRandomPowerUp(enemy){
         //50-20-15-15
@@ -153,28 +162,5 @@ class SceneArcade extends Phaser.Scene {
             }
         }
     }
-
-
-    dropShards(parent){
-        //TODO move this to obstacles class and should be called from the obstacle explosion on complete function
-        let dropAmount = Random.randomBetween(10, 3);
-        for (let i = 0; i < dropAmount; i++) {
-            let positionX = Random.randomBetween(parent.displayWidth, 0)
-            positionX = Random.randomlyPositiveOrNegative(positionX) + parent.x;
-
-            let positionY = Random.randomBetween(parent.displayHeight, 0);
-            positionY = Random.randomlyPositiveOrNegative(positionY) + parent.y;
-
-            let shard = this.physics.add.sprite(positionX, positionY, "rockShard");
-            //TODO rotate by random angle
-            Align.scaleToGameWidth(shard, 0.03);
-            this.physics.moveTo(shard, this.materialBag.x + this.materialBag.displayWidth/2, this.materialBag.y + this.materialBag.displayHeight/2, game.config.height / 2);
-
-            WorldUtil.setDeleteOnWorldOut(shard);
-        }
-
-
-    }
-
 
 }
