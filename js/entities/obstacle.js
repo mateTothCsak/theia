@@ -45,10 +45,12 @@ class Obstacle{
             let positionY = Random.randomBetween(this.displayHeight, 0);
             positionY = Random.randomlyPositiveOrNegative(positionY) + this.y;
 
-            let shard = this.scene.physics.add.sprite(positionX, positionY, "rockShard");
+            let shard = this.scene.physics.add.sprite(positionX, positionY, this.shardSpriteKey);
 
             let angle = Random.randomBetween(360, 1);
             shard.angle = angle;
+
+            shard.materialType = this.materialType;
 
             this.scene.shardGroup.add(shard);
             Align.scaleToGameWidth(shard, 0.03);

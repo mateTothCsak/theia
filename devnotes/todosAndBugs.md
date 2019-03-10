@@ -7,8 +7,8 @@
         1. Powerups should be random and rare //DONE
         2. Atk speed based on distance, not on time //REJECTED
         3. Different level rocks randomly // DONE
-        4. Rock drops
-        5. companions
+        4. Rock drops //DONE
+        5. companions -> monday (03.11)
         6. Game balance
         7. end and start screen
         8. refactor

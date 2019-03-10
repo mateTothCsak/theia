@@ -55,6 +55,7 @@ class SceneArcade extends Phaser.Scene {
         Align.scaleToGameWidth(this.materialBag, 0.13);
         this.materialBag.setImmovable();
         this.materialBag.setDepth(1);
+        this.materialBag.content = {};
 
 
         //colliders
@@ -140,6 +141,12 @@ class SceneArcade extends Phaser.Scene {
     }
 
     shardsToBag(bag, shard){
+        let materialType = shard.materialType;
+        if (!this.materialBag.content[materialType]){
+            this.materialBag.content[materialType] = 1;
+        }else {
+            this.materialBag.content[materialType] += 1;
+        }
         shard.destroy();
     }
 
