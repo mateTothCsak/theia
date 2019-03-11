@@ -34,11 +34,11 @@ window.onload = function(){
             physics: {
                 default: 'arcade',
                 arcade: {
-                    debug: true
+                    debug: false
                 }
             },
             isMobile: isMobile,
-            scene: [SceneLoad, SceneGameOver, SceneTitle, SceneArcade]
+            scene: [SceneLoad,  SceneGameOver, SceneTitle, SceneArcade]
         };
     }
     game = new Phaser.Game(config);

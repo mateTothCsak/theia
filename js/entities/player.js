@@ -61,7 +61,7 @@ class Player{
             }, this);
         }
         this.scene.time.delayedCall(1000, function () {
-            this.scene.scene.start('SceneGameOver');
+            this.scene.scene.start('SceneGameOver', {materials: this.scene.materialBag.content});
         }, [], this);
 
     }
