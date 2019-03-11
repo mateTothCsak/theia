@@ -52,7 +52,7 @@ class Player{
 
     characterDeath(){
         this.playerSprite.isAlive = false;
-        this.runAnimation.pause();
+        this.runAnimation.destroy();
         WorldUtil.unsetDraggable(this.scene, this.playerSprite);
         for(let i = 0; i<this.scene.obstacleGroup.getChildren().length; i++) {
             Phaser.Actions.Call(this.scene.obstacleGroup.getChildren(), function (obstacle) {
@@ -60,9 +60,9 @@ class Player{
                 obstacle.setVelocity(0,0);
             }, this);
         }
-        this.playerSprite.once('pointerup', function () {
-            this.scene.scene.start('SceneArcade');
-        }, this);
+        this.scene.time.delayedCall(1000, function () {
+            this.scene.scene.start('SceneGameOver');
+        }, [], this);
 
     }
 

@@ -1,14 +1,14 @@
 
-class SceneTitle extends Phaser.Scene {
+class SceneGameOver extends Phaser.Scene {
     constructor(){
-        super('SceneTitle');
+        super('SceneGameOver');
     }
 
     create(){
         this.grid = new AlignGrid({scene: this, rows: 15, cols: 15});
 
 
-        this.background = this.add.sprite(0, 0, "titleBackground").setOrigin(0,0);
+        this.background = this.add.sprite(0, 0, "gameOverBackground").setOrigin(0,0);
         this.background.displayWidth = game.config.width;
         this.background.displayHeight = game.config.height;
 
@@ -28,20 +28,22 @@ class SceneTitle extends Phaser.Scene {
 
     }
 
-    update(){
+    update() {
+
         let currentTime = new Date().getTime();
-        if (this.isGameStart + 600 <= currentTime){
+        if (this.isGameStart + 600 <= currentTime) {
             this.scene.start("SceneArcade");
         }
-        if (this.isGameStart + 300 <= currentTime){
+        if (this.isGameStart + 300 <= currentTime) {
             this.startButton.setTexture("gameStartButton");
         }
     }
 
 
-    startGame(){
-        this.startButton.setTexture("gameStartButtonClicked");
-        this.isGameStart = new Date().getTime();
-    }
+        startGame(){
+            this.startButton.setTexture("gameStartButtonClicked");
+            this.isGameStart = new Date().getTime();
+        }
+
 
 }

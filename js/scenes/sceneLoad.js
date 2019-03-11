@@ -11,6 +11,14 @@ class SceneLoad extends Phaser.Scene {
         this.progText.setOrigin(0.5, 0.5);
         this.load.on('progress', this.onProgress, this);
 
+        //title
+        this.load.image("titleBackground", "images/backgrounds/titleBackground.jpg");
+        this.load.image("title", "images/ui/title.png");
+        this.load.image("gameStartButton", "images/ui/gameStartButton.png");
+        this.load.image("gameStartButtonClicked", "images/ui/gameStartButtonClicked.png");
+
+        //game over
+        this.load.image("gameOverBackground", "images/backgrounds/gameOverBackground.jpg");
 
 
         //Arcade
@@ -43,7 +51,6 @@ class SceneLoad extends Phaser.Scene {
     }
 
     onProgress(value){
-        console.log(value);
         this.bar.setPercent(value);
         var per = Math.floor(value*100)
         this.progText.setText(per);
