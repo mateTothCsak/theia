@@ -6,7 +6,6 @@ class Player{
         this.pictureKey = config.pictureKey;
         this.animationPace = 8;
 
-
         this.previousShotTime = new Date().getTime();
 
         this.projectileSpeed = config.projectileSpeed;
@@ -29,9 +28,11 @@ class Player{
         this.playerSprite.playerDamage = config.playerDamage;
         this.playerSprite.attackSpeed = config.attackSpeed;
         this.playerSprite.isAlive = true;
+        this.playerSprite.leftSidekick = null;
+        this.playerSprite.rightSidekick = null;
 
-        WorldUtil.setDraggable(this.scene, this.playerSprite);
-
+        WorldUtil.setDraggableWithSidekick(this.scene, this.playerSprite);
+        //create player-drag function where also sidekicks follow the players coordinates + - their x distance
     }
 
 
@@ -64,6 +65,18 @@ class Player{
             this.scene.scene.start('SceneGameOver', {materials: this.scene.materialBag.content});
         }, [], this);
 
+    }
+
+    setLeftSidekick(sidekick){
+        this.playerSprite.leftSidekick = sidekick;
+        let distance = this.playerSprite.leftSidekick.sidekickSprite.displayWidth;
+        this.playerSprite.leftSidekick.sidekickSprite.x = this.scene.character.playerSprite.x - distance;
+    }
+
+    setRightSidekick(sidekick){
+        this.playerSprite.rightSidekick = sidekick;
+        let distance = this.playerSprite.leftSidekick.sidekickSprite.displayWidth;
+        this.playerSprite.rightSidekick.sidekickSprite.x = this.scene.character.playerSprite.x + distance;
     }
 
 

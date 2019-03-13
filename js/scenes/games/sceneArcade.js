@@ -40,11 +40,14 @@ class SceneArcade extends Phaser.Scene {
                                             health: 50,
                                             pictureKey: "mainCharacter",
                                             attackSpeed: 70,
-                                            projectilePictureKey: 'mainProjectile',
+                                            projectilePictureKey: 'mainProjectile', //projectile types needs to be configured
                                             projectileSpeed: -600,
                                             projectileLevel: 1,
                                             playerDamage: 2});
-
+        this.leftSidekick = new Owl({scene: this, level: 1, type: "CLAY"}); //a function would be needed to decide what kind of sidekick to create
+        this.rightSidekick = new Elephant({scene: this, level: 1, type: "ROCK"});
+        this.character.setLeftSidekick(this.leftSidekick);
+        this.character.setRightSidekick(this.rightSidekick);
 
 
         this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});

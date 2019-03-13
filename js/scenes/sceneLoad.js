@@ -38,9 +38,13 @@ class SceneLoad extends Phaser.Scene {
         this.load.image('coalShard', 'images/obstacles/coalShard.png')
         this.load.image('limestoneShard', 'images/obstacles/limestoneShard.png')
 
+        this.load.spritesheet('owlClay', 'images/sidekicks/owlClay.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('elephantRock', 'images/sidekicks/elephantRock.png', {frameWidth: 32, frameHeight: 32});
+
 
         this.load.image('scoreContainer', 'images/ui/scoreContainerLight.png');
         this.load.image('materialBag', 'images/ui/materialBag.png');
+
         this.load.image('damageUp', 'images/powerups/damageUp.png');
         this.load.image('attackSpeedUp', 'images/powerups/attackSpeedUp.png');
         this.load.image('projectileSpeedUp', 'images/powerups/projectileSpeedUp.png');

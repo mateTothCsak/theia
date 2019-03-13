@@ -23,6 +23,17 @@ class WorldUtil
         });
     }
 
+    static setDraggableWithSidekick(scene, objectSprite){
+        scene.input.setDraggable(objectSprite);
+        scene.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+            gameObject.x = dragX;
+            let leftSidekickDistance = objectSprite.leftSidekick.sidekickSprite.displayWidth;
+            let rightSidekickDistance = objectSprite.rightSidekick.sidekickSprite.displayWidth;
+            objectSprite.leftSidekick.sidekickSprite.x = objectSprite.x - leftSidekickDistance;
+            objectSprite.rightSidekick.sidekickSprite.x = objectSprite.x + rightSidekickDistance;
+        });
+    }
+
 
     static setDeleteOnWorldOutBottom(scene, objectSprite){
         // do not apply if starting from top

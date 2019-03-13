@@ -20,15 +20,14 @@ class SceneGameOver extends Phaser.Scene {
 
         this.graphics=this.add.graphics();
         this.graphics.fillStyle(0x000000, 0.4);
-        this.backgroundRect = this.graphics.fillRect(0, 0, game.config.width, game.config.height);
+        this.graphics.fillRect(0, 0, game.config.width, game.config.height);
 
 
         this.title = this.add.text(0, 0, "Well Played!");
         this.title.setFontFamily("Tahoma").setFontStyle("bold").setFontSize(game.config.width/8).setColor("#ded0b7");
         this.grid.placeAtIndex(17, this.title);
 
-
-        //listing function for the materials
+        this.listMaterials();
 
 
         //restart game button needed --> Nimbus sans bold font
@@ -39,30 +38,49 @@ class SceneGameOver extends Phaser.Scene {
 
         this.startButton.on("pointerdown", this.startGame, this);
 
+        this.isGameRestart = false;
+
 
 
     }
 
     update() {
 
-        let currentTime = new Date().getTime();
-        if (this.isGameStart + 600 <= currentTime) {
-            this.scene.start("SceneArcade");
-        }
-        if (this.isGameStart + 300 <= currentTime) {
-            this.startButton.setTexture("gameStartButton");
+        if(this.isGameRestart){
+            let currentTime = new Date().getTime();
+            if (this.gameStartTime + 600 <= currentTime) {
+                this.isGameRestart = false;
+                this.scene.start("SceneArcade");
+
+            }
+            if (this.gameStartTime + 300 <= currentTime) {
+                this.startButton.setTexture("gameStartButton");
+            }
         }
     }
 
 
-        startGame(){
-            this.startButton.setTexture("gameStartButtonClicked");
-            this.isGameStart = new Date().getTime();
-        }
+    startGame(){
+        this.startButton.setTexture("gameStartButtonClicked");
+        this.gameStartTime = new Date().getTime();
+        this.isGameRestart = true;
+    }
 
 
     init(data)
     {
         this.materials = data.materials;
+    }
+
+    listMaterials(){
+        let lineHeight = game.config.height/3;
+        for(let material in this.materials){
+            let shardKey = material.toLowerCase() + "Shard";
+            let tempText = this.add.text(game.config.width/2.5, lineHeight, this.materials[material] + " x");
+            tempText.setFontFamily("Tahoma").setFontStyle("bold").setFontSize(game.config.width/16).setColor("#ded0b7");
+            let tempShard = this.add.sprite(tempText.x + tempText.displayWidth + game.config.width/30, lineHeight, shardKey).setOrigin(0, 0);
+            Align.scaleToGameHeight(tempShard, 0.045);
+            lineHeight += game.config.height/12;
+        }
     }
 }
