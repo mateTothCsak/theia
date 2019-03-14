@@ -9,7 +9,7 @@
         3. Different level rocks randomly // DONE
         4. Rock drops //DONE
         5. Companions // DONE
-        6. Game balance
+        6. Game balance //DELAYED
         7. End and start screen // DONE
         8. Refactor
         
