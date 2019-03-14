@@ -34,6 +34,7 @@ class SceneArcade extends Phaser.Scene {
         this.powerUpGroup = this.physics.add.group();
         this.scrollingGroup = this.physics.add.group(); //all other sprites scrolling with BG
         this.shardGroup = this.physics.add.group();
+        this.sidekickGroup = this.physics.add.group();
 
         //add character
         this.character = new Player({scene: this,
@@ -42,7 +43,7 @@ class SceneArcade extends Phaser.Scene {
                                             attackSpeed: 70,
                                             projectilePictureKey: 'mainProjectile', //projectile types needs to be configured
                                             projectileSpeed: -600,
-                                            projectileLevel: 1,
+                                            projectileLevel: 2,
                                             playerDamage: 2});
         this.leftSidekick = new Owl({scene: this, level: 1, type: "CLAY"}); //a function would be needed to decide what kind of sidekick to create
         this.rightSidekick = new Elephant({scene: this, level: 1, type: "ROCK"});
@@ -62,10 +63,11 @@ class SceneArcade extends Phaser.Scene {
 
 
         //colliders
-        this.physics.add.collider(this.projectileGroup, this.obstacleGroup, this.hitEnemy, null, this );
-        this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.hitPlayer, null, this );
+        this.physics.add.collider(this.projectileGroup, this.obstacleGroup, this.hitObstacle, null, this );
+        this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.crashPlayer, null, this );
         this.physics.add.collider(this.character.playerSprite, this.powerUpGroup,  this.pickUp, null, this );
         this.physics.add.collider(this.materialBag, this.shardGroup,  this.shardsToBag, null, this );
+        this.physics.add.collider(this.sidekickGroup, this.obstacleGroup, this.crashSideKick, null, this)
     }
 
 
@@ -113,18 +115,17 @@ class SceneArcade extends Phaser.Scene {
     //
     //Collisional functions
     //
-    hitEnemy(projectile, enemy){
-        enemy.health -= projectile.damage;
+    hitObstacle(projectile, obstacle){
+        obstacle.health -= projectile.damage;
         projectile.destroy();
-        if (enemy.health <= 0){
-            this.generateRandomPowerUp(enemy);
-            enemy.explode();
-            enemy.destroy();
-
+        if (obstacle.health <= 0){
+            this.generateRandomPowerUp(obstacle);
+            obstacle.explode();
+            obstacle.destroy();
         }
     }
 
-    hitPlayer(player, obstacle){
+    crashPlayer(player, obstacle){
         if(player.isAlive) {
             player.health -= obstacle.damage;
             if (player.health <= 0) {
@@ -132,7 +133,7 @@ class SceneArcade extends Phaser.Scene {
             } else {
                 obstacle.destroy();
             }
-            player.alpha = player.health / player.baseHealth;
+            player.alpha = 0.5;
             this.time.delayedCall(500, function () {
                 player.alpha = 1;
             }, [], this);
@@ -151,6 +152,23 @@ class SceneArcade extends Phaser.Scene {
             this.materialBag.content[materialType] += 1;
         }
         shard.destroy();
+    }
+
+    crashSideKick(sidekick, obstacle){
+        if(sidekick.isAlive) {
+            sidekick.health -= obstacle.damage;
+            obstacle.destroy();
+            console.log(sidekick.health)
+            if (sidekick.health <= 0) {
+                sidekick.alpha = 0;
+                sidekick.isAlive = false;
+            } else {
+                sidekick.alpha = 0.5;
+                this.time.delayedCall(500, function () {
+                    sidekick.alpha = 1;
+                }, [], this);
+            }
+        }
     }
 
 

@@ -8,11 +8,10 @@
         2. Atk speed based on distance, not on time //REJECTED
         3. Different level rocks randomly // DONE
         4. Rock drops //DONE
-        5. Companions 
+        5. Companions // DONE
         6. Game balance
         7. End and start screen // DONE
         8. Refactor
-        9. Build website project structure 
         
         TODO-s 0.0.0.4:
         1. upon picking up health, getting damaged a floating indicator should show the hp change with red or green text, and then fade (like apex)
@@ -20,6 +19,7 @@
         3. player shot animation change
         4. special "soul stone" obstacle to drop soul shard
         5. change text on button gameOver screen to "Restart game"
+        6. 
         
         
 

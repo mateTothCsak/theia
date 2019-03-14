@@ -49,6 +49,18 @@ class Player{
                 pictureKey: this.projectilePictureKey});
             this.previousShotTime = this.currentTime;
         }
+        if (this.playerSprite.leftSidekick){
+            if(this.playerSprite.leftSidekick.sidekickSprite.isAlive) {
+                this.playerSprite.leftSidekick.shootProjectiles();
+            }
+        }
+        if (this.playerSprite.rightSidekick){
+            if(this.playerSprite.rightSidekick.sidekickSprite.isAlive) {
+                this.playerSprite.rightSidekick.shootProjectiles();
+            }
+        }
+
+
     }
 
     characterDeath(){
