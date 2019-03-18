@@ -22,9 +22,6 @@ class PowerUp {
         this.powerUpSprite.onPickUp = this.onPickUp;
     }
 
-
-
     onPickUp(){}
-
 
 }

@@ -6,7 +6,6 @@ class Player{
         this.pictureKey = config.pictureKey;
         this.animationPace = 8;
 
-
         this.previousShotTime = new Date().getTime();
 
         this.projectileSpeed = config.projectileSpeed;
@@ -29,16 +28,18 @@ class Player{
         this.playerSprite.playerDamage = config.playerDamage;
         this.playerSprite.attackSpeed = config.attackSpeed;
         this.playerSprite.isAlive = true;
+        this.playerSprite.leftSidekick = null;
+        this.playerSprite.rightSidekick = null;
 
-        WorldUtil.setDraggable(this.scene, this.playerSprite);
-
+        WorldUtil.setDraggableWithSidekick(this.scene, this.playerSprite);
+        //create player-drag function where also sidekicks follow the players coordinates + - their x distance
     }
 
 
     shootProjectiles(){
         this.d = new Date();
         this.currentTime = this.d.getTime();
-        if (this.previousShotTime + 1000-(this.playerSprite.attackSpeed*10) <= this.currentTime){
+        if (this.previousShotTime + 250 -this.playerSprite.attackSpeed <= this.currentTime){ //1000*10)
             new Projectile({
                 scene: this.scene,
                 shooter: this.playerSprite,
@@ -48,11 +49,23 @@ class Player{
                 pictureKey: this.projectilePictureKey});
             this.previousShotTime = this.currentTime;
         }
+        if (this.playerSprite.leftSidekick){
+            if(this.playerSprite.leftSidekick.sidekickSprite.isAlive) {
+                this.playerSprite.leftSidekick.shootProjectiles();
+            }
+        }
+        if (this.playerSprite.rightSidekick){
+            if(this.playerSprite.rightSidekick.sidekickSprite.isAlive) {
+                this.playerSprite.rightSidekick.shootProjectiles();
+            }
+        }
+
+
     }
 
     characterDeath(){
         this.playerSprite.isAlive = false;
-        this.runAnimation.pause();
+        this.runAnimation.destroy();
         WorldUtil.unsetDraggable(this.scene, this.playerSprite);
         for(let i = 0; i<this.scene.obstacleGroup.getChildren().length; i++) {
             Phaser.Actions.Call(this.scene.obstacleGroup.getChildren(), function (obstacle) {
@@ -60,10 +73,22 @@ class Player{
                 obstacle.setVelocity(0,0);
             }, this);
         }
-        this.playerSprite.once('pointerup', function () {
-            this.scene.scene.start('SceneArcade');
-        }, this);
+        this.scene.time.delayedCall(1000, function () {
+            this.scene.scene.start('SceneGameOver', {materials: this.scene.materialBag.content});
+        }, [], this);
 
+    }
+
+    setLeftSidekick(sidekick){
+        this.playerSprite.leftSidekick = sidekick;
+        let distance = this.playerSprite.leftSidekick.sidekickSprite.displayWidth;
+        this.playerSprite.leftSidekick.sidekickSprite.x = this.scene.character.playerSprite.x - distance;
+    }
+
+    setRightSidekick(sidekick){
+        this.playerSprite.rightSidekick = sidekick;
+        let distance = this.playerSprite.leftSidekick.sidekickSprite.displayWidth;
+        this.playerSprite.rightSidekick.sidekickSprite.x = this.scene.character.playerSprite.x + distance;
     }
 
 

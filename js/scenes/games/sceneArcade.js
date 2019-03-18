@@ -15,12 +15,16 @@ class SceneArcade extends Phaser.Scene {
         //this.grid.showNumbers();
 
         //scene variables
+        this.score = 1;
         this.gameSpeed = 1;
         this.speedDown = game.config.height/16*this.gameSpeed; //help to kind of bing the speed of obstacles to speed of game
         this.lastSpeedUpdate = new Date().getTime();
+
         this.speedIncreaseAt = 100; //gamespeed gets increased when reached this amount of points
-        this.score = 1;
         this.pointIncerase = 1;
+        this.powerUpDropChance = 10; // percent
+
+        this.gameLevel = 1;
 
 
         //groups
@@ -28,40 +32,55 @@ class SceneArcade extends Phaser.Scene {
         this.obstacleGroup = this.physics.add.group();
         this.obstacleLine = new ObstacleLine({scene: this});
         this.powerUpGroup = this.physics.add.group();
+        this.scrollingGroup = this.physics.add.group(); //all other sprites scrolling with BG
+        this.shardGroup = this.physics.add.group();
+        this.sidekickGroup = this.physics.add.group();
 
         //add character
         this.character = new Player({scene: this,
                                             health: 50,
                                             pictureKey: "mainCharacter",
                                             attackSpeed: 70,
-                                            projectilePictureKey: 'mainProjectile',
+                                            projectilePictureKey: 'mainProjectile', //projectile types needs to be configured
                                             projectileSpeed: -600,
-                                            projectileLevel: 1,
-                                            playerDamage: 3});
+                                            projectileLevel: 2,
+                                            playerDamage: 2});
+        this.leftSidekick = new Owl({scene: this, level: 1, type: "CLAY"}); //a function would be needed to decide what kind of sidekick to create
+        this.rightSidekick = new Elephant({scene: this, level: 1, type: "ROCK"});
+        this.character.setLeftSidekick(this.leftSidekick);
+        this.character.setRightSidekick(this.rightSidekick);
+
+
+        this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
+        this.scoreBox.setDepth(1);
+
+        this.materialBag = this.physics.add.sprite(0, 0, "materialBag").setOrigin(0, 0);
+        this.grid.placeAtIndex(0, this.materialBag);
+        Align.scaleToGameWidth(this.materialBag, 0.13);
+        this.materialBag.setImmovable();
+        this.materialBag.setDepth(1);
+        this.materialBag.content = {};
 
 
         //colliders
-        this.physics.add.collider(this.projectileGroup, this.obstacleGroup, this.hitEnemy, null, this );
-        this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.hitPlayer, null, this );
-
+        this.physics.add.collider(this.projectileGroup, this.obstacleGroup, this.hitObstacle, null, this );
+        this.physics.add.collider(this.character.playerSprite, this.obstacleGroup,  this.crashPlayer, null, this );
         this.physics.add.collider(this.character.playerSprite, this.powerUpGroup,  this.pickUp, null, this );
-
-        this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
-        this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
-        this.scoreBox.setDepth(1);
+        this.physics.add.collider(this.materialBag, this.shardGroup,  this.shardsToBag, null, this );
+        this.physics.add.collider(this.sidekickGroup, this.obstacleGroup, this.crashSideKick, null, this)
     }
 
 
     update() {
         if(this.character.playerSprite.isAlive) {
             this.checkForSpeedUp();
-            this.rollingBackground.tilePositionY -= this.gameSpeed/this.rollingBackground.tileScaleX;
+            this.rollingBackground.tilePositionY -= this.gameSpeed/this.rollingBackground.tileScaleY;
             this.score += this.pointIncerase/10;
             this.scoreBox.scoreText.setText(Math.floor(this.score));
             this.character.shootProjectiles();
             this.obstacleLine.makeObstacles();
             this.obstacleLine.moveObstacles();
-            console.log(this.rollingBackground.tilePositionY);
+            this.obstacleLine.moveScrollingObjects();
         }
     }
 
@@ -85,9 +104,10 @@ class SceneArcade extends Phaser.Scene {
         if(Math.floor(this.score)%this.speedIncreaseAt == 0){
             this.score += 1;
             this.gameSpeed += 1;
-            this.speedDown = game.config.height/16*this.gameSpeed;
+            this.speedDown = game.config.height/16*(this.gameSpeed);
             this.speedIncreaseAt = this.speedIncreaseAt*2;
             this.lastSpeedUpdate = currentTime;
+            this.gameLevel += 1;
         }
     }
 
@@ -95,16 +115,17 @@ class SceneArcade extends Phaser.Scene {
     //
     //Collisional functions
     //
-    hitEnemy(projectile, enemy){
-        enemy.health -= projectile.damage;
+    hitObstacle(projectile, obstacle){
+        obstacle.health -= projectile.damage;
         projectile.destroy();
-        if (enemy.health <= 0){
-            this.generateRandomPowerUp(enemy);
-            enemy.destroy();
+        if (obstacle.health <= 0){
+            this.generateRandomPowerUp(obstacle);
+            obstacle.explode();
+            obstacle.destroy();
         }
     }
 
-    hitPlayer(player, obstacle){
+    crashPlayer(player, obstacle){
         if(player.isAlive) {
             player.health -= obstacle.damage;
             if (player.health <= 0) {
@@ -112,7 +133,7 @@ class SceneArcade extends Phaser.Scene {
             } else {
                 obstacle.destroy();
             }
-            player.alpha = player.health / player.baseHealth;
+            player.alpha = 0.5;
             this.time.delayedCall(500, function () {
                 player.alpha = 1;
             }, [], this);
@@ -121,22 +142,53 @@ class SceneArcade extends Phaser.Scene {
 
     pickUp(player, powerUp){
         powerUp.onPickUp();
-        console.log(this.character.playerSprite.playerDamage);
     }
 
+    shardsToBag(bag, shard){
+        let materialType = shard.materialType;
+        if (!this.materialBag.content[materialType]){
+            this.materialBag.content[materialType] = 1;
+        }else {
+            this.materialBag.content[materialType] += 1;
+        }
+        shard.destroy();
+    }
 
-    generateRandomPowerUp(enemy){
-        let decider = Random.randomBetween(4,1);
-        if (decider == 1){
-            new ProjectileSpeedUp({scene: this, startingX: enemy.x,startingY: enemy.y});
-        }  else if (decider == 2){
-            new AttackSpeedUp({scene: this, startingX: enemy.x,startingY: enemy.y});
-        } else if (decider == 3){
-            new DamageUp({scene: this, startingX: enemy.x,startingY: enemy.y});
-        } else if (decider == 4){
-            new HealthUp({scene: this, startingX: enemy.x,startingY: enemy.y});
+    crashSideKick(sidekick, obstacle){
+        if(sidekick.isAlive) {
+            sidekick.health -= obstacle.damage;
+            obstacle.destroy();
+            console.log(sidekick.health)
+            if (sidekick.health <= 0) {
+                sidekick.alpha = 0;
+                sidekick.isAlive = false;
+            } else {
+                sidekick.alpha = 0.5;
+                this.time.delayedCall(500, function () {
+                    sidekick.alpha = 1;
+                }, [], this);
+            }
         }
     }
 
+
+
+
+    generateRandomPowerUp(enemy){
+        //50-20-15-15
+        let willDrop = (Random.randomBetween(100, 1) < this.powerUpDropChance) ? true : false;
+        if(willDrop) {
+            let decider = Random.randomBetween(100, 1);
+            if(decider <= 50){
+                new DamageUp({scene: this, startingX: enemy.x, startingY: enemy.y});
+            } else if (decider > 50 && decider <= 70){
+                new HealthUp({scene: this, startingX: enemy.x, startingY: enemy.y});
+            }else if (decider > 70 && decider <= 85){
+                new ProjectileSpeedUp({scene: this, startingX: enemy.x, startingY: enemy.y});
+            } else if (decider > 85 ){
+                new AttackSpeedUp({scene: this, startingX: enemy.x, startingY: enemy.y});
+            }
+        }
+    }
 
 }

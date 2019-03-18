@@ -22,7 +22,8 @@ window.onload = function(){
                     debug: false
                 }
             },
-            scene: [SceneLoad, SceneMain, SceneTitle, SceneArcade]
+            isMobile: isMobile,
+            scene: [SceneLoad, SceneGameOver, SceneTitle, SceneArcade]
         };
     } else {
         var config = {
@@ -36,11 +37,9 @@ window.onload = function(){
                     debug: false
                 }
             },
-            scene: [SceneLoad, SceneMain, SceneTitle, SceneArcade]
+            isMobile: isMobile,
+            scene: [SceneLoad,  SceneGameOver, SceneTitle, SceneArcade]
         };
     }
-
-    globals = new Globals();
-    globals.isMobile = isMobile;
     game = new Phaser.Game(config);
 }
