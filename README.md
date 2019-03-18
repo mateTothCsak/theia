@@ -27,6 +27,23 @@ You can contribute to this project with:
 
 Update log:
 
+* V. 0.0.0.3
+    * Power ups drop randomly (and relative rarely)
+    * More type of obstacles appear now
+        * Clay
+        * Coal
+        * Limestone
+        * Rock
+    * Obstacles explode if destroyed
+    * Shards get collected in a bag by type
+    * End-screen shows us how many shards we have obtained
+    * Game companions 
+        * Follow player drag
+        * Shoots
+        * Has very similar attributes as player character
+        * Collides with obstacles
+
+
 * V. 0.0.0.2
     * Obstacles (Rock)
         * they collide with projectiles and player character
