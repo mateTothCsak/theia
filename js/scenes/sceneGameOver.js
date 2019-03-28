@@ -8,9 +8,6 @@ class SceneGameOver extends Phaser.Scene {
 
         this.grid = new AlignGrid({scene: this, rows: 15, cols: 15});
 
-        console.log(this.materials);
-
-
         this.background = this.add.sprite(0, 0, "gameOverBackground").setOrigin(0,0);
         this.background.displayWidth = game.config.width;
         this.background.displayHeight = game.config.height;
@@ -40,6 +37,9 @@ class SceneGameOver extends Phaser.Scene {
 
         this.isGameRestart = false;
 
+        console.log(this.id);
+        console.log(this.score);
+        console.log(this.totalMaterials);
 
         (async () => {
             const rawResponse = await fetch('http://localhost:8080/updateWealth', {
@@ -100,7 +100,6 @@ class SceneGameOver extends Phaser.Scene {
             this.totalMaterials += this.materials[material];
         }
 
-        console.log("I have reached this point")
         let scoreText = this.add.text(game.config.width/2.5, lineHeight, "Your score was: " + Math.round(this.score));
         scoreText.setFontFamily("Tahoma").setFontStyle("bold").setFontSize(game.config.width/16).setColor("#ded0b7");
         this.grid.placeAtIndex(138, scoreText);

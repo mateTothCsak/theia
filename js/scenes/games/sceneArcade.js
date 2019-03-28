@@ -5,7 +5,7 @@ class SceneArcade extends Phaser.Scene {
 
     create() {
 
-        this.palyerId = 0;
+        this.playerId = 0;
         this.leftSidekickName = "";
         this.rightSidekickName = "";
         this.asyncLoaded = false;
@@ -25,7 +25,7 @@ class SceneArcade extends Phaser.Scene {
             const content = await rawResponse.json();
             this.leftSidekickName = content.leftSidekick;
             this.rightSidekickName = content.rightSidekick;
-            this.palyerId = content.id;
+            this.playerId = content.id;
             this.asyncLoaded = true;
         })();
 
