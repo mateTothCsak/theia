@@ -74,7 +74,7 @@ class Player{
             }, this);
         }
         this.scene.time.delayedCall(1000, function () {
-            this.scene.scene.start('SceneGameOver', {materials: this.scene.materialBag.content});
+            this.scene.scene.start('SceneGameOver', {materials: this.scene.materialBag.content, score: this.scene.score, id: this.scene.playerId});
         }, [], this);
 
     }

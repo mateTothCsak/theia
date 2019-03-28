@@ -6,7 +6,6 @@ class SceneGameOver extends Phaser.Scene {
 
     create(){
 
-
         this.grid = new AlignGrid({scene: this, rows: 15, cols: 15});
 
         console.log(this.materials);
@@ -27,6 +26,7 @@ class SceneGameOver extends Phaser.Scene {
         this.title.setFontFamily("Tahoma").setFontStyle("bold").setFontSize(game.config.width/8).setColor("#ded0b7");
         this.grid.placeAtIndex(17, this.title);
 
+        this.totalMaterials = 0;
         this.listMaterials();
 
 
@@ -39,6 +39,20 @@ class SceneGameOver extends Phaser.Scene {
         this.startButton.on("pointerdown", this.startGame, this);
 
         this.isGameRestart = false;
+
+
+        (async () => {
+            const rawResponse = await fetch('http://localhost:8080/updateWealth', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "Access-Control-Allow-Origin": "*"
+                },
+                body: JSON.stringify({id: this.id, experience: this.score, gold: this.totalMaterials})
+            });
+            const content = await rawResponse.json();
+        })();
 
 
 
@@ -70,10 +84,12 @@ class SceneGameOver extends Phaser.Scene {
     init(data)
     {
         this.materials = data.materials;
+        this.score = data.score;
+        this.id = data.id;
     }
 
     listMaterials(){
-        let lineHeight = game.config.height/3;
+        let lineHeight = game.config.height/4;
         for(let material in this.materials){
             let shardKey = material.toLowerCase() + "Shard";
             let tempText = this.add.text(game.config.width/2.5, lineHeight, this.materials[material] + " x");
@@ -81,6 +97,17 @@ class SceneGameOver extends Phaser.Scene {
             let tempShard = this.add.sprite(tempText.x + tempText.displayWidth + game.config.width/30, lineHeight, shardKey).setOrigin(0, 0);
             Align.scaleToGameHeight(tempShard, 0.045);
             lineHeight += game.config.height/12;
+            this.totalMaterials += this.materials[material];
         }
+
+        console.log("I have reached this point")
+        let scoreText = this.add.text(game.config.width/2.5, lineHeight, "Your score was: " + Math.round(this.score));
+        scoreText.setFontFamily("Tahoma").setFontStyle("bold").setFontSize(game.config.width/16).setColor("#ded0b7");
+        this.grid.placeAtIndex(138, scoreText);
+        let coinText = this.add.text(game.config.width/2.5, lineHeight, "You sold your materials for " + this.totalMaterials + " coins!");
+        coinText.setFontFamily("Tahoma").setFontStyle("bold").setFontSize(game.config.width/20).setColor("#ded0b7");
+        this.grid.placeAtIndex(151, coinText);
+
+
     }
 }

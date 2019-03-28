@@ -5,6 +5,31 @@ class SceneArcade extends Phaser.Scene {
 
     create() {
 
+        this.palyerId = 0;
+        this.leftSidekickName = "";
+        this.rightSidekickName = "";
+        this.asyncLoaded = false;
+        this.sidekicksDone = false;
+
+
+        (async () => {
+            const rawResponse = await fetch('http://localhost:8080/currentPlayer', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    "Access-Control-Allow-Origin": "*"
+                },
+                body: JSON.stringify({})
+            });
+            const content = await rawResponse.json();
+            this.leftSidekickName = content.leftSidekick;
+            this.rightSidekickName = content.rightSidekick;
+            this.palyerId = content.id;
+            this.asyncLoaded = true;
+        })();
+
+
         //this should reduce animation lag
         this.game.forceSingleUpdate = true;
 
@@ -45,11 +70,8 @@ class SceneArcade extends Phaser.Scene {
                                             projectileSpeed: -600,
                                             projectileLevel: 2,
                                             playerDamage: 2});
-        this.leftSidekick = new Owl({scene: this, level: 1, type: "CLAY"}); //a function would be needed to decide what kind of sidekick to create
-        this.rightSidekick = new Elephant({scene: this, level: 1, type: "ROCK"});
-        this.character.setLeftSidekick(this.leftSidekick);
-        this.character.setRightSidekick(this.rightSidekick);
 
+        this.setSidekicks();
 
         this.scoreBox = new ScoreBox({scene: this, locationIndex: 9});
         this.scoreBox.setDepth(1);
@@ -72,7 +94,8 @@ class SceneArcade extends Phaser.Scene {
 
 
     update() {
-        if(this.character.playerSprite.isAlive) {
+        if(this.character.playerSprite.isAlive && this.asyncLoaded) {
+            this.setSidekicks();
             this.checkForSpeedUp();
             this.rollingBackground.tilePositionY -= this.gameSpeed/this.rollingBackground.tileScaleY;
             this.score += this.pointIncerase/10;
@@ -171,6 +194,26 @@ class SceneArcade extends Phaser.Scene {
         }
     }
 
+    setSidekicks(){
+        if(this.asyncLoaded && !this.sidekicksDone) {
+            if (this.leftSidekickName === "owl") {
+                this.leftSidekick = new Owl({scene: this, level: 1, type: "CLAY"});
+                this.character.setLeftSidekick(this.leftSidekick);
+            } else if (this.leftSidekickName === "elephant") {
+                this.leftSidekick = new Elephant({scene: this, level: 1, type: "ROCK"});
+                this.character.setLeftSidekick(this.leftSidekick);
+            }
+            if (this.rightSidekickName === "owl") {
+                this.rightSidekick = new Owl({scene: this, level: 1, type: "CLAY"});
+                this.character.setRightSidekick(this.rightSidekick);
+            } else if (this.rightSidekickName === "elephant") {
+                this.rightSidekick = new Elephant({scene: this, level: 1, type: "ROCK"});
+                this.character.setRightSidekick(this.rightSidekick);
+            }
+            this.sidekicksDone = true;
+        }
+
+    }
 
 
 

@@ -61,7 +61,7 @@ class SceneLoad extends Phaser.Scene {
     }
 
     create(){
-        this.scene.start("SceneArcade");
+        this.scene.start("SceneTitle");
     }
 
 
