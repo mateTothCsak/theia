@@ -21,6 +21,15 @@ You can contribute to this project with:
 * _Music and Sound effects_
 * _Game design ideas_
 
+---
+
+Important links:
+* [Front-end repository](https://github.com/mateTothCsak/theiaFrontEnd)
+* [Back-end repository](https://github.com/mateTothCsak/theiaBackEnd)
+
+
+* [English video of 0.0.0.3 state](https://d.tube/#!/v/goodguymate/9bsu4dbs)
+* [Hungarian video of 0.0.0.3 state](https://www.youtube.com/watch?v=9JRxN-5j9dU&feature=youtu.be)
 
 ---
 
