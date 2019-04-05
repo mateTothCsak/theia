@@ -5,6 +5,9 @@ class SceneTitle extends Phaser.Scene {
     }
 
     create(){
+
+
+
         this.grid = new AlignGrid({scene: this, rows: 15, cols: 15});
 
 

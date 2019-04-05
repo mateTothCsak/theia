@@ -3,8 +3,7 @@
 
 Theia is a HTML5 based shoot em up game, with a lot of RPG elements and supposedly a player driven economy. 
 It is being developed using the Phaser JS framework.
-
-As of now the game is still in early development stage, using placeholder visuals and temporary audio. 
+As of now the game is still in early development stage, I am using placeholder visuals and temporary audio is. 
 
 
 For dev plans have a look at the 'devnotes' directory. 
